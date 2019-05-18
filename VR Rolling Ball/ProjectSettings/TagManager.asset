@@ -10,6 +10,9 @@ TagManager:
   - BlueDiamond
   - RedDiamond
   - Ball
+  - Accelerator
+  - Unmoveable
+  - NonPushable
   layers:
   - Default
   - TransparentFX

@@ -1,17 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BallMovement : MonoBehaviour
 {
     Rigidbody rb;
     Transform cameraT;
     SphereCollider col;
+    public bool isFinish = false;
 
     public float forwardForce = 2000f;
     public float backForce = 2000f;
     public float sidewaysForce = 600f;
-
+    public float forwardVelocityLimit;
+	
     
     void Start()
     {
@@ -22,23 +22,31 @@ public class BallMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        MoveForward();
+        if (!isFinish)
+        {
+            MoveForward();
 
-        MoveRight();
+            MoveRight();
 
-        MoveLeft();
+            MoveLeft();
+
+            if (rb.position.y < -1)
+                FindObjectOfType<GameManager>().GameOver();
+        }
     }
 
     void MoveForward()
     {
         // move ball forward
-        rb.AddForce(Vector3.forward * forwardForce * Time.deltaTime);
+        if(rb.velocity.z < forwardVelocityLimit)
+            rb.AddForce(Vector3.forward * forwardForce * Time.deltaTime);
     }
 
     public void MoveBack()
     {
         // move ball forward
-        rb.AddForce(Vector3.back * backForce * Time.deltaTime, ForceMode.Impulse);
+        if(rb.velocity.z > - 10)
+            rb.AddForce(Vector3.back * backForce * Time.deltaTime, ForceMode.Impulse);
     }
 
     void MoveRight()
